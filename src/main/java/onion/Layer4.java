@@ -16,7 +16,7 @@ public class Layer4 extends Layer {
     private final Random random = new Random();
 
     @Override
-    public byte[] decode(byte[] input) {
+    public byte[] decode(byte[] input) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         BinaryObject packet = new BinaryObject(input);
         while (packet.offset < input.length) {

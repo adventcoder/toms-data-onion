@@ -1,6 +1,8 @@
 package onion;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class BinaryObject {
     public byte[] bytes;
@@ -53,7 +55,7 @@ public class BinaryObject {
         }
     }
 
-    public void getBytes(int offset, int length, ByteArrayOutputStream out) {
+    public void getBytes(int offset, int length, OutputStream out) throws IOException {
         out.write(bytes, this.offset + offset, length);
     }
 

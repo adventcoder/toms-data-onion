@@ -32,7 +32,7 @@ public abstract class Layer {
     public void writeDescription(PrintStream out) {
     }
 
-    public void writePayload(PrintStream out, byte[] payload) throws IOException {
+    public void writePayload(PrintStream out, byte[] payload) {
         out.println("==[ Payload ]===============================================");
         out.println();
         writeText(out, "<~" + Ascii85.encode(payload) + "~>");
@@ -46,11 +46,11 @@ public abstract class Layer {
         }
     }
 
-    public byte[] decode(byte[] input) {
+    public byte[] decode(byte[] input) throws IOException {
         throw new UnsupportedOperationException();
     }
 
-    public byte[] encode(byte[] input) {
+    public byte[] encode(byte[] input) throws IOException{
         throw new UnsupportedOperationException();
     }
 }
