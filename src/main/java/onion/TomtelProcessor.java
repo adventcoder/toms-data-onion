@@ -51,9 +51,9 @@ public class TomtelProcessor {
             default:
                 int src = opcode & 7;
                 dest = (opcode >>> 3) & 7;
-                if ((opcode >>> 6) == 1) { // MV[i] {dest} <- src
+                if ((opcode & 0xC0) == 0x40) { // MV[i] {dest} <- src
                     set8(dest, get8(src));
-                } else if ((opcode >>> 6) == 2) { // MV[i]32 {dest} <- src
+                } else if ((opcode & 0xC0) == 0x80) { // MV[i]32 {dest} <- src
                     set32(dest, get32(src));
                 } else {
                     throw new RuntimeException("opcode: " + opcode);

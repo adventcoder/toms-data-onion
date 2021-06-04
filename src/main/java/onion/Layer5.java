@@ -95,9 +95,9 @@ public class Layer5 extends Layer {
         byte[] output = new byte[input.length - offset];
         Cipher cipher = createBlockCipher(key, Cipher.ENCRYPT_MODE);
         for (int i = offset; i < input.length; i += 16) {
-            byte[] pad = cipher.update(counter);
+            byte[] keyBlock = cipher.update(counter);
             for (int j = 0; j < 16 && i + j < input.length; j++) {
-                output[i + j - offset] = (byte) (input[i + j] ^ pad[j]);
+                output[i + j - offset] = (byte) (input[i + j] ^ keyBlock[j]);
             }
             increment(counter);
         }

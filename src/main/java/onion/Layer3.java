@@ -24,7 +24,7 @@ public class Layer3 extends Layer {
 
     @Override
     public byte[] encode(byte[] input) {
-        return encrypt(input, generateKey());
+        return encrypt(input, randomKey());
     }
 
     private byte[] encrypt(byte[] input, byte[] key) {
@@ -35,7 +35,7 @@ public class Layer3 extends Layer {
         return output;
     }
 
-    private byte[] generateKey() {
+    private byte[] randomKey() {
         byte[] key = new byte[32];
         random.nextBytes(key);
         return key;

@@ -6,9 +6,16 @@ import java.nio.charset.StandardCharsets;
 public class Layer1 extends Layer {
     public static void main(String[] args) throws IOException {
         Layer1 layer1 = new Layer1();
-        Reader in = new InputStreamReader(new FileInputStream("layers/1.txt"), StandardCharsets.UTF_8);
-        try (OutputStream out = new FileOutputStream("layers/2.txt")) {
-            layer1.peel(in, out);
+        if (true) {
+            InputStream in = new FileInputStream("layers/2.txt");
+            try (PrintStream out = new PrintStream(new FileOutputStream("layers/1-prime.txt"))) {
+                layer1.unpeel(in, out);
+            }
+        } else {
+            Reader in = new InputStreamReader(new FileInputStream("layers/1.txt"), StandardCharsets.UTF_8);
+            try (OutputStream out = new FileOutputStream("layers/2.txt")) {
+                layer1.peel(in, out);
+            }
         }
     }
 

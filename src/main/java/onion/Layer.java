@@ -26,23 +26,19 @@ public abstract class Layer {
 
     public void unpeel(InputStream in, PrintStream out) throws IOException {
         writeDescription(out);
+        out.println("==[ Payload ]===============================================");
+        out.println();
         writePayload(out, encode(in.readAllBytes()));
+        out.println();
     }
 
     public void writeDescription(PrintStream out) {
     }
 
     public void writePayload(PrintStream out, byte[] payload) {
-        out.println("==[ Payload ]===============================================");
-        out.println();
-        writeText(out, "<~" + Ascii85.encode(payload) + "~>");
-    }
-
-    public void writeText(PrintStream out, String text) {
-        for (String line : text.split("\n")) {
-            for (int start = 0; start < line.length(); start += 60) {
-                out.println(line.substring(start, Math.min(start + 60, line.length())));
-            }
+        String payloadText = "<~" + Ascii85.encode(payload) + "~>";
+        for (int i = 0; i < payloadText.length(); i += 60) {
+            out.println(payloadText.substring(i, Math.min(i + 60, payloadText.length())));
         }
     }
 

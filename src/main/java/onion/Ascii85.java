@@ -10,7 +10,7 @@ public class Ascii85 {
             long num = 0;
             int byteCount = 0;
             while (i < input.length && byteCount < 4) {
-                num = (num << 8) | input[i++];
+                num = (num << 8) | Byte.toUnsignedInt(input[i++]);
                 byteCount++;
             }
             if (byteCount == 4 && num == 0) {
@@ -22,9 +22,10 @@ public class Ascii85 {
                     byteCount++;
                 }
                 int digitCount = 5 - paddingLength;
+                int power = 52200625;
                 while (digitCount > 0) {
-                    output.append((char) (num / 52200625 % 85 + 33));
-                    num = num * 85 % 4437053125L;
+                    output.append((char) (num / power % 85 + 33));
+                    power /= 85;
                     digitCount--;
                 }
             }
