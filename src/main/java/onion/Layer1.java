@@ -8,7 +8,7 @@ public class Layer1 extends Layer {
         Layer1 layer1 = new Layer1();
         if (false) {
             InputStream in = new FileInputStream("layers/2-prime.txt");
-            try (PrintStream out = new PrintStream(new FileOutputStream("layers/1-prime.txt"))) {
+            try (Writer out = new OutputStreamWriter(new FileOutputStream("layers/1-prime.txt"), StandardCharsets.UTF_8)) {
                 layer1.unpeel(in, out);
             }
         } else {

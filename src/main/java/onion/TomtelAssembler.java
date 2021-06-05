@@ -20,10 +20,10 @@ public class TomtelAssembler {
     private final NavigableMap<Integer, String> refs = new TreeMap<>();
     
     public TomtelAssembler(InputStream source) {
-        append(source);
+        scan(source);
     }
 
-    public void append(InputStream source) {
+    public void scan(InputStream source) {
         Scanner scanner = new Scanner(source, "UTF-8");
         while (scanner.hasNext()) {
             scanLabels(scanner);

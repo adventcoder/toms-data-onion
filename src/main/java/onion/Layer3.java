@@ -9,7 +9,7 @@ public class Layer3 extends Layer {
         Layer3 layer3 = new Layer3();
         if (false) {
             InputStream in = new FileInputStream("layers/4-prime.txt");
-            try (PrintStream out = new PrintStream(new FileOutputStream("layers/3-prime.txt"))) {
+            try (Writer out = new OutputStreamWriter(new FileOutputStream("layers/3-prime.txt"), StandardCharsets.UTF_8)) {
                 layer3.unpeel(in, out);
             }
         } else {

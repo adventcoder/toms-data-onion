@@ -12,7 +12,7 @@ public class Layer5 extends Layer {
         Layer5 layer5 = new Layer5();
         if (false) {
             InputStream in = new FileInputStream("layers/6-prime.txt");
-            try (PrintStream out = new PrintStream(new FileOutputStream("layers/5-prime.txt"))) {
+            try (Writer out = new OutputStreamWriter(new FileOutputStream("layers/5-prime.txt"), StandardCharsets.UTF_8)) {
                 layer5.unpeel(in, out);
             }
         } else {

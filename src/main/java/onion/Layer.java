@@ -24,21 +24,22 @@ public abstract class Layer {
         return Ascii85.decode(payload.toString().replaceAll("\\s+", ""));
     }
 
-    public void unpeel(InputStream in, PrintStream out) throws IOException {
+    public void unpeel(InputStream in, Writer out) throws IOException {
         writeDescription(out);
-        out.println("==[ Payload ]===============================================");
-        out.println();
+        out.write("==[ Payload ]===============================================\n");
+        out.write("\n");
         writePayload(out, encode(in.readAllBytes()));
-        out.println();
+        out.write("\n");
     }
 
-    public void writeDescription(PrintStream out) {
+    public void writeDescription(Writer out) throws IOException {
     }
 
-    public void writePayload(PrintStream out, byte[] payload) {
+    public void writePayload(Writer out, byte[] payload) throws IOException {
         String payloadText = "<~" + Ascii85.encode(payload) + "~>";
         for (int i = 0; i < payloadText.length(); i += 60) {
-            out.println(payloadText.substring(i, Math.min(i + 60, payloadText.length())));
+            out.write(payloadText.substring(i, Math.min(i + 60, payloadText.length())));
+            out.write("\n");
         }
     }
 

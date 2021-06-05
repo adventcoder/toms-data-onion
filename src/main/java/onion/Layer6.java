@@ -9,8 +9,9 @@ public class Layer6 extends Layer {
         Layer6 layer6 = new Layer6();
         if (false) {
             InputStream in = new FileInputStream("layers/core-prime.txt");
-            PrintStream out = new PrintStream(new FileOutputStream("layers/6-prime.txt"), true);
-            layer6.unpeel(in, out);
+            try (Writer out = new OutputStreamWriter(new FileOutputStream("layers/6-prime.txt"), StandardCharsets.UTF_8)) {
+                layer6.unpeel(in, out);
+            }
         } else {
             Reader in = new InputStreamReader(new FileInputStream("layers/6.txt"), StandardCharsets.UTF_8);
             try (OutputStream out = new FileOutputStream("layers/core.txt")) {
@@ -26,16 +27,16 @@ public class Layer6 extends Layer {
     public byte[] decode(byte[] input) throws IOException {
         Tomtel code = new Tomtel(input);
         if (debug) {
-            print(code);
+            disassemble(code);
         }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         code.run(out);
         return out.toByteArray();
     }
 
-    private void print(Tomtel code) {
+    private void disassemble(Tomtel code) {
         code.print(0, 143, System.out);
-        // 16-byte blocks of cipher text
+        // variable number of 16-byte blocks of cipher text
         code.print(code.size() - 367, code.size() - 291, System.out);
         // 256 byte substitution table
         code.print(code.size() - 35, code.size() - 25, System.out);
