@@ -7,9 +7,16 @@ import java.util.Random;
 public class Layer3 extends Layer {
     public static void main(String[] args) throws IOException {
         Layer3 layer3 = new Layer3();
-        Reader in = new InputStreamReader(new FileInputStream("layers/3.txt"), StandardCharsets.UTF_8);
-        try (OutputStream out = new FileOutputStream("layers/4.txt")) {
-            layer3.peel(in, out);
+        if (false) {
+            InputStream in = new FileInputStream("layers/4-prime.txt");
+            try (PrintStream out = new PrintStream(new FileOutputStream("layers/3-prime.txt"))) {
+                layer3.unpeel(in, out);
+            }
+        } else {
+            Reader in = new InputStreamReader(new FileInputStream("layers/3.txt"), StandardCharsets.UTF_8);
+            try (OutputStream out = new FileOutputStream("layers/4.txt")) {
+                layer3.peel(in, out);
+            }
         }
     }
 

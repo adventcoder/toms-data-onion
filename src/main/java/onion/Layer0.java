@@ -6,20 +6,27 @@ import java.nio.charset.StandardCharsets;
 
 public class Layer0 extends Layer {
     public static void main(String[] args) throws IOException {
-        File file = new File("layers/0.txt");
-        if (!file.exists()) {
-            File layersDir = file.getParentFile();
-            if (!layersDir.exists() && !layersDir.mkdir()) {
-                throw new IOException("Failed to create directory: " + layersDir);
-            }
-            try (PrintStream out = new PrintStream(new FileOutputStream(file), true, "UTF-8")) {
-                fetch(out);
-            }
-        }
         Layer0 layer0 = new Layer0();
-        Reader in = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
-        try (OutputStream out = new FileOutputStream("layers/1.txt")) {
-            layer0.peel(in, out);
+        if (false) {
+            InputStream in = new FileInputStream("layers/1-prime.txt");
+            try (PrintStream out = new PrintStream(new FileOutputStream("layers/0-prime.txt"))) {
+                layer0.unpeel(in, out);
+            }
+        } else {
+            File file = new File("layers/0.txt");
+            if (!file.exists()) {
+                File layersDir = file.getParentFile();
+                if (!layersDir.exists() && !layersDir.mkdir()) {
+                    throw new IOException("Failed to create directory: " + layersDir);
+                }
+                try (PrintStream out = new PrintStream(new FileOutputStream(file))) {
+                    fetch(out);
+                }
+            }
+            Reader in = new InputStreamReader(new FileInputStream("layers/0.txt"), StandardCharsets.UTF_8);
+            try (OutputStream out = new FileOutputStream("layers/1.txt")) {
+                layer0.peel(in, out);
+            }
         }
     }
 

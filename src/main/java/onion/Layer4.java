@@ -7,9 +7,17 @@ import java.util.Random;
 public class Layer4 extends Layer {
     public static void main(String[] args) throws IOException {
         Layer4 layer4 = new Layer4();
-        Reader in = new InputStreamReader(new FileInputStream("layers/4.txt"), StandardCharsets.UTF_8);
-        try (OutputStream out = new FileOutputStream("layers/5.txt")) {
-            layer4.peel(in, out);
+        if (false) {
+            InputStream in = new FileInputStream("layers/5-prime.txt");
+            try (PrintStream out = new PrintStream(new FileOutputStream("layers/4-prime.txt"))) {
+                layer4.unpeel(in, out);
+            }
+        } else {
+            Reader in = new InputStreamReader(new FileInputStream("layers/4.txt"), StandardCharsets.UTF_8);
+            try (OutputStream out = new FileOutputStream("layers/5.txt")) {
+                layer4.peel(in, out);
+            }
+            in.close();
         }
     }
 
@@ -54,7 +62,7 @@ public class Layer4 extends Layer {
             packet.setByte(9, 17);
             packet.setIPAddress(12, "10.1.1.10");
             packet.setIPAddress(16, "10.1.1.200");
-            packet.setByte(10, computeIPChecksum(packet));
+            packet.setWord(10, computeIPChecksum(packet));
             packet.setWord(20, random.nextInt(1 << 16));
             packet.setWord(22, 42069);
             packet.setWord(24, packet.length - 20);

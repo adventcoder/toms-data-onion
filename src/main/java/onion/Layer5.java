@@ -10,9 +10,16 @@ import java.util.Random;
 public class Layer5 extends Layer {
     public static void main(String[] args) throws IOException {
         Layer5 layer5 = new Layer5();
-        Reader in = new InputStreamReader(new FileInputStream("layers/5.txt"), StandardCharsets.UTF_8);
-        try (OutputStream out = new FileOutputStream("layers/6.txt")) {
-            layer5.peel(in, out);
+        if (false) {
+            InputStream in = new FileInputStream("layers/6-prime.txt");
+            try (PrintStream out = new PrintStream(new FileOutputStream("layers/5-prime.txt"))) {
+                layer5.unpeel(in, out);
+            }
+        } else {
+            Reader in = new InputStreamReader(new FileInputStream("layers/5.txt"), StandardCharsets.UTF_8);
+            try (OutputStream out = new FileOutputStream("layers/6.txt")) {
+                layer5.peel(in, out);
+            }
         }
     }
 

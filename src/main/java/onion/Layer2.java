@@ -6,16 +6,22 @@ import java.nio.charset.StandardCharsets;
 public class Layer2 extends Layer {
     public static void main(String[] args) throws IOException {
         Layer2 layer2 = new Layer2();
-        Reader in = new InputStreamReader(new FileInputStream("layers/2.txt"), StandardCharsets.UTF_8);
-        try (OutputStream out = new FileOutputStream("layers/3.txt")) {
-            layer2.peel(in, out);
+        if (false) {
+            InputStream in = new FileInputStream("layers/3-prime.txt");
+            try (PrintStream out = new PrintStream(new FileOutputStream("layers/2-prime.txt"))) {
+                layer2.unpeel(in, out);
+            }
+        } else {
+            Reader in = new InputStreamReader(new FileInputStream("layers/2.txt"), StandardCharsets.UTF_8);
+            try (OutputStream out = new FileOutputStream("layers/3.txt")) {
+                layer2.peel(in, out);
+            }
         }
     }
 
     @Override
     public byte[] decode(byte[] input) {
-        byte[] output = new byte[input.length * 7 / 8];
-        int j = 0;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         int bits = 0;
         int bitCount = 0;
         for (int i = 0; i < input.length; i++) {
@@ -25,29 +31,28 @@ public class Layer2 extends Layer {
                 bitCount += 7;
                 if (bitCount >= 8) {
                     bitCount -= 8;
-                    output[j++] = (byte) ((bits >>> bitCount) & 0xFF);
+                    out.write(bits >>> bitCount);
                 }
             }
         }
-        return output;
+        return out.toByteArray();
     }
 
     @Override
     public byte[] encode(byte[] input) {
-        byte[] output = new byte[input.length * 8 / 7];
-        int j = 0;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         int bits = 0;
         int bitCount = 0;
         for (int i = 0; i < input.length; i++) {
-            int b = Byte.toUnsignedInt(input[i]);
-            bits = (bits << 8) | b;
+            bits = (bits << 8) | Byte.toUnsignedInt(input[i]);
             bitCount += 8;
             while (bitCount >= 7) {
                 bitCount -= 7;
-                output[j++] = (byte) ((((bits >>> bitCount) & 0x7F) << 1) | parity(b));
+                int b = (bits >>> bitCount) & 0x7F;
+                out.write((b << 1) | parity(b));
             }
         }
-        return output;
+        return out.toByteArray();
     }
 
     private int parity(int b) {

@@ -7,13 +7,13 @@ import java.util.Random;
 public class Layer6 extends Layer {
     public static void main(String[] args) throws IOException {
         Layer6 layer6 = new Layer6();
-        if (true) {
-            InputStream in = new FileInputStream("layers/core.txt");
+        if (false) {
+            InputStream in = new FileInputStream("layers/core-prime.txt");
             PrintStream out = new PrintStream(new FileOutputStream("layers/6-prime.txt"), true);
             layer6.unpeel(in, out);
         } else {
-            Reader in = new InputStreamReader(new FileInputStream("layers/6-prime.txt"), StandardCharsets.UTF_8);
-            try (OutputStream out = new FileOutputStream("layers/core-prime.txt")) {
+            Reader in = new InputStreamReader(new FileInputStream("layers/6.txt"), StandardCharsets.UTF_8);
+            try (OutputStream out = new FileOutputStream("layers/core.txt")) {
                 layer6.peel(in, out);
             }
         }
@@ -35,12 +35,12 @@ public class Layer6 extends Layer {
 
     private void print(Tomtel code) {
         code.print(0, 143, System.out);
-        //  143 ... 2911: 173 16-byte blocks of encrypted text
-        code.print(2911, 2987, System.out);
-        // 2987 ... 3243: 256 byte substitution table
-        code.print(3243, 3253, System.out);
-        // 3253 ... 3269: 16 byte key
-        code.print(3269, 3278, System.out);
+        // 16-byte blocks of cipher text
+        code.print(code.size() - 367, code.size() - 291, System.out);
+        // 256 byte substitution table
+        code.print(code.size() - 35, code.size() - 25, System.out);
+        // 16 byte key
+        code.print(code.size() - 9, code.size(), System.out);
     }
 
     @Override

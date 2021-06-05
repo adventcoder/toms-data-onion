@@ -6,8 +6,8 @@ import java.nio.charset.StandardCharsets;
 public class Layer1 extends Layer {
     public static void main(String[] args) throws IOException {
         Layer1 layer1 = new Layer1();
-        if (true) {
-            InputStream in = new FileInputStream("layers/2.txt");
+        if (false) {
+            InputStream in = new FileInputStream("layers/2-prime.txt");
             try (PrintStream out = new PrintStream(new FileOutputStream("layers/1-prime.txt"))) {
                 layer1.unpeel(in, out);
             }
