@@ -1,20 +1,19 @@
 package onion;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.ByteArrayOutputStream;
 
 public class TomtelProcessor {
     public final byte[] mem;
-    public final OutputStream out;
-    public final byte[] reg8 = new byte[6];
-    public final int[] reg32 = new int[6];
+    private final ByteArrayOutputStream out;
+    private final byte[] reg8 = new byte[6];
+    private final int[] reg32 = new int[6];
 
-    public TomtelProcessor(byte[] mem, OutputStream out) {
+    public TomtelProcessor(byte[] mem, ByteArrayOutputStream out) {
         this.mem = mem;
         this.out = out;
     }
 
-    public void run() throws IOException {
+    public void run() {
         boolean halted = false;
         while (!halted) {
             int opcode = read8();

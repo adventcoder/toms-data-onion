@@ -2,13 +2,15 @@ package onion;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Layer6 extends Layer {
     public static void main(String[] args) throws IOException {
         Layer6 layer6 = new Layer6();
         if (false) {
-            InputStream in = new FileInputStream("layers/core-prime.txt");
+            InputStream in = new FileInputStream("layers/core.txt");
             try (Writer out = new OutputStreamWriter(new FileOutputStream("layers/6-prime.txt"), StandardCharsets.UTF_8)) {
                 layer6.unpeel(in, out);
             }
@@ -21,27 +23,24 @@ public class Layer6 extends Layer {
     }
 
     private final Random random = new Random();
-    private final boolean debug = true;
 
     @Override
-    public byte[] decode(byte[] input) throws IOException {
-        Tomtel code = new Tomtel(input);
-        if (debug) {
-            disassemble(code);
-        }
+    public byte[] decode(byte[] input) {
+        disassemble(input);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        code.run(out);
+        TomtelProcessor processor = new TomtelProcessor(input, out);
+        processor.run();
         return out.toByteArray();
     }
 
-    private void disassemble(Tomtel code) {
-        code.print(0, 143, System.out);
+    private void disassemble(byte[] code) {
+        Tomtel.disassemble(code, 0, 143, System.out);
         // variable number of 16-byte blocks of cipher text
-        code.print(code.size() - 367, code.size() - 291, System.out);
+        Tomtel.disassemble(code, code.length - 367, code.length - 291, System.out);
         // 256 byte substitution table
-        code.print(code.size() - 35, code.size() - 25, System.out);
+        Tomtel.disassemble(code, code.length - 35, code.length - 25, System.out);
         // 16 byte key
-        code.print(code.size() - 9, code.size(), System.out);
+        Tomtel.disassemble(code, code.length - 9, code.length, System.out);
     }
 
     @Override
@@ -86,10 +85,10 @@ public class Layer6 extends Layer {
     }
 
     private byte[] assemble(byte[] ciphertext, byte[] table, byte[] key) {
-        TomtelAssembler assembler = new TomtelAssembler(getClass().getResourceAsStream("Layer6.tom"));
-        assembler.insert("KEY", key);
-        assembler.insert("TABLE", table);
-        assembler.insert("CIPHERTEXT", ciphertext);
-        return assembler.assemble().toByteArray();
+        Map<String, byte[]> data = new HashMap<>();
+        data.put("KEY", key);
+        data.put("TABLE", table);
+        data.put("CIPHERTEXT", ciphertext);
+        return Tomtel.assemble(getClass().getResourceAsStream("Layer6.tom"), data);
     }
 }
